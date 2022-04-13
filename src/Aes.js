@@ -17,8 +17,9 @@ const cipher = crypto.createCipheriv(algo, key, iv);
 //using RSA to encrypt the AES key
 const encryptedKey = EncryptData(crypto.createDecipheriv(algo, key, iv))
 // It's important to use the same authTag and IV that were used during encoding
-const decipher = DecryptData(encryptedKey);
+const decipher = DecryptData(encryptedKey); // using RSA to decrypt AES block cipher key
 
+//AES ENCRYPTION FUNCTION
   function  AesDataEncrypt (plain_data){
    const encryptedData = Buffer.concat([
      cipher.update(Buffer.from(plain_data, 'utf-8')),
@@ -27,7 +28,7 @@ const decipher = DecryptData(encryptedKey);
   return encryptedData;
 }
 
-
+//AES DECRYPTION FUNCTION
 function AesDataDecrypt(encrypted_data){
   const authTag =  cipher.getAuthTag();
   EncryptData(authTag);
@@ -41,7 +42,6 @@ function AesDataDecrypt(encrypted_data){
   return decryptedData;
 }
 module.exports = {
-  key: key,
   AesDataDecrypt,
   AesDataEncrypt,
   encryptedKey
