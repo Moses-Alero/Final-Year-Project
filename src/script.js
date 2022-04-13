@@ -11,8 +11,6 @@ const JSON_DATA = {
     hash: authHash
 }
 
-console.log(JSON_DATA);
-
 /* TODO:
     Set  Receiver side decryption,
     Create Design & Frontend end for User Interface
