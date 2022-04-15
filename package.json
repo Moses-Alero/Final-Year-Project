@@ -1,5 +1,19 @@
 {
+  "name": "Final Year Project",
+  "version": "1.0.0",
+  "description": "An application that uses hybrid algorithm of RSA and AES for transferring data across the web",
+  "scripts": {
+    "dev": "nodemon --watch src --watch public",
+    "start": "node src/index.js"
+  },
+  "author": "Alero Moses",
   "devDependencies": {
     "node-rsa": "^1.1.1"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "luxon": "^2.3.1",
+    "mustache": "^4.2.0",
+    "socket.io": "^4.4.1"
   }
 }
