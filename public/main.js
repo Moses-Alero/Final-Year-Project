@@ -1,4 +1,3 @@
-
 const socket = io()
 
 const $messageInput = document.querySelector('#message-box');
