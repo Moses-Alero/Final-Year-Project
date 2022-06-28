@@ -3,17 +3,21 @@
   "version": "1.0.0",
   "description": "An application that uses hybrid algorithm of RSA and AES for transferring data across the web",
   "scripts": {
+    "build": "webpack --config webpack.config.js",
     "dev": "nodemon --watch src --watch public",
-    "start": "node src/index.js"
+    "start": "node src/app/server.js"
   },
   "author": "Alero Moses",
   "devDependencies": {
-    "node-rsa": "^1.1.1"
+    "node-rsa": "^1.1.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
     "express": "^4.17.3",
     "luxon": "^2.3.1",
     "mustache": "^4.2.0",
+    "qs": "^6.11.0",
     "socket.io": "^4.4.1"
   }
 }
