@@ -1,7 +1,8 @@
-import { AesDataEncrypt } from "../app/utils/Aes.js";
+import Aes, { AesDataEncrypt } from "../app/utils/Aes.js";
 import RSA from "../app/utils/rsa.js";
 import { hash } from "../app/utils/hash.js";
 import qs from 'qs'
+import { EncryptKey } from "../app/utils/rsa1.js";
 
 const socket = io();
 
@@ -55,6 +56,13 @@ $button.addEventListener('click',(event)=>{
                  encryptedAESData: RsaEncrypt,
                  messageHash
              };
+
+             console.log({
+                messageSent: $messageInput.value,
+                 encryptedMessage: AesEncrypt.encryptedData.toString('ascii'),
+                 encryptedAESKey: EncryptKey(AesEncrypt.key),
+                 messageHash
+             })
      
              socket.emit('sendMessage',payload)
              $messageInput.value = '';
@@ -75,6 +83,9 @@ socket.on('message',(message)=>{
     })
     $message_div.insertAdjacentHTML('beforeend',html)
     autoScroll()
+})
+socket.on('proof',(proof)=>{
+    console.log(proof)
 })
 
 socket.on('roomData', ({ room, users }) => {

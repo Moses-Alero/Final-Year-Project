@@ -7,6 +7,7 @@ const RSA = require('./utils/rsa.js');
 const {hash} = require('./utils/hash.js');
 const {DateTime} = require('luxon');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users.js');
+const { EncryptKey } = require('./utils/rsa1.js');
 
 
 
@@ -40,6 +41,7 @@ io.on('connection',(socket)=>{
     })    
         socket.on('sendMessage',(payload)=>{
             const  user = getUser(socket.id)
+            socket.broadcast.to(user.roomName).emit('proof', generateMessage2(user.username,payload) )
             io.to(user.roomName).emit('message',generateMessage(user.username,payload))
     })
     
@@ -77,5 +79,25 @@ const generateMessage = (username,payload)=>{
         username,
         text: AesDecrypt.toString('utf-8'),
         timeCreated: dt.toLocaleString(DateTime.TIME_WITH_SECONDS)
+    };
+}
+
+const generateMessage2 = (username,payload)=>{
+    //RECEIVER SIDE
+    //decrypt AESKeyData
+    const RsaDecrypt = {
+        decryptedAesIV: payload.encryptedAESData.AesIV,
+        decryptedAesKey: RSA.DecryptData(payload.encryptedAESData.AesKey)
+    }
+    //decrypt AESEncrypted message
+    const AesDecrypt = AES.AesDataDecrypt(payload.encryptedMessage, RsaDecrypt.decryptedAesKey, RsaDecrypt.decryptedAesIV);
+    //confirm message integrity
+    const RHash = hash(AesDecrypt.toString('utf-8'));
+    return {
+        Sender: username,
+        decryptedAesKey: payload.encryptedAESData.AesKey.toString('ascii'),
+        ReceivedEncryptedMessage: payload.encryptedMessage.toString('ascii'), 
+        DecryptedMessage: AesDecrypt.toString('utf-8'),
+        GeneratedHash: RHash
     };
 }
